@@ -70,6 +70,10 @@ public class Config
             .comment("Master switch for the Apotheosis + L2Hostility integration: makes mobs spawned by Apotheosis spawners (including chorus-fruit No-AI spawners) receive L2Hostility levels and affixes")
             .define("apotheosisL2HostilityFixEnabled", true);
 
+    private static final ForgeConfigSpec.IntValue CURSE_OF_TIMID_DROP_LEVEL = BUILDER
+            .comment("Minimum L2 Hostility difficulty level of a monster: the first time a player kills such a monster, the Curse of Timid (misc:curse_of_timid) drops")
+            .defineInRange("curseOfTimidDropLevel", 1000, 1, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static boolean doubleJumpEnabled;
@@ -87,6 +91,7 @@ public class Config
     public static boolean cleanupProtectPlayerDeathDrops;
     public static int cleanupPlayerDeathDropProtectionSeconds;
     public static boolean apotheosisL2HostilityFixEnabled;
+    public static int curseOfTimidDropLevel;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
@@ -106,5 +111,6 @@ public class Config
         cleanupProtectPlayerDeathDrops = CLEANUP_PROTECT_PLAYER_DEATH_DROPS.get();
         cleanupPlayerDeathDropProtectionSeconds = CLEANUP_DEATH_DROP_PROTECTION_SECONDS.get();
         apotheosisL2HostilityFixEnabled = APOTHESIS_L2HOSTILITY_FIX_ENABLED.get();
+        curseOfTimidDropLevel = CURSE_OF_TIMID_DROP_LEVEL.get();
     }
 }

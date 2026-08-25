@@ -1,5 +1,9 @@
 {
     "key.categories.misc": "杂项",
     "key.misc.double_jump_toggle": "二段跳开关",
-    "message.misc.cleanup_warning": "将在 %s 秒后清理掉落物"
+    "message.misc.cleanup_warning": "将在 %s 秒后清理掉落物",
+    "item.misc.curse_of_timid": "怯懦诅咒",
+    "tooltip.misc.curse_of_timid": "减少 10% 所受伤害，且难度等级每提升 10 级额外减少 1%（最高 80%）。",
+    "tooltip.misc.curse_of_timid.1": "每 10 级难度等级减少 0.1 点基础近战攻击力，最多减少 10 点。",
+    "tooltip.misc.curse_of_timid.3": "首次击杀等级达到 %s 级及以上的怪物时掉落。"
 }

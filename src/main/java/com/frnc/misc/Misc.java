@@ -5,7 +5,9 @@ import com.frnc.misc.mechanics.doublejump.network.DoubleJumpNetwork;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
 import com.frnc.misc.mechanics.droppeditemcleanup.CleanupLists;
 import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
+import com.frnc.misc.mechanics.timid_curse.TimidCurseItems;
 import com.mojang.logging.LogUtils;
+import dev.xkmc.l2hostility.init.registrate.LHBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,6 +44,9 @@ public class Misc
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
+        // Register 「怯懦诅咒」(Curse of Timid) Curio 饰品
+        TimidCurseItems.ITEMS.register(modEventBus);
+
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
@@ -70,7 +75,11 @@ public class Misc
     // Add the frnc block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-
+        // 将「怯懦诅咒」挂靠到莱特兰·恶意(L2 Hostility)的创造标签页
+        if (event.getTab() == LHBlocks.TAB.get())
+        {
+            event.accept(TimidCurseItems.CURSE_OF_TIMID.get());
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

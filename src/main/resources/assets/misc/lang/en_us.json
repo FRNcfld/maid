@@ -1,5 +1,9 @@
 {
     "key.categories.misc": "Misc",
     "key.misc.double_jump_toggle": "Toggle Double Jump",
-    "message.misc.cleanup_warning": "Dropped items will be cleaned up in %s second(s)."
+    "message.misc.cleanup_warning": "Dropped items will be cleaned up in %s second(s).",
+    "item.misc.curse_of_timid": "Curse of Timid",
+    "tooltip.misc.curse_of_timid": "-10% Incoming Damage; +1% reduction per 10 Difficulty Levels (Max 80%).",
+    "tooltip.misc.curse_of_timid.1": "-0.1 Base Melee Attack per 10 Difficulty Levels (Max -10).",
+    "tooltip.misc.curse_of_timid.3": "Drops after your first kill of a monster at %s Difficulty Levels or higher."
 }
