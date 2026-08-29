@@ -5,6 +5,7 @@ import com.frnc.misc.mechanics.doublejump.network.DoubleJumpNetwork;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
 import com.frnc.misc.mechanics.droppeditemcleanup.CleanupLists;
 import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
+import com.frnc.misc.mechanics.liquidburner.RecipeRegistry;
 import com.frnc.misc.mechanics.timid_curse.TimidCurseItems;
 import com.mojang.logging.LogUtils;
 import dev.xkmc.l2hostility.init.registrate.LHBlocks;
@@ -46,6 +47,9 @@ public class Misc
 
         // Register 「怯懦诅咒」(Curse of Timid) Curio 饰品
         TimidCurseItems.ITEMS.register(modEventBus);
+
+        // Register liquidburning 配方类型与序列化器 (Create 烈焰人燃烧器液体燃料)
+        RecipeRegistry.register(modEventBus);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

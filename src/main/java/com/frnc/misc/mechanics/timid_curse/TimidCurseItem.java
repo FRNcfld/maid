@@ -100,7 +100,7 @@ public class TimidCurseItem extends CurseCurioItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid").withStyle(ChatFormatting.GOLD));
 		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid.1").withStyle(ChatFormatting.GOLD));
-		// 获取途径提示使用鲜红色(猩红/动脉血红),与其他金色效果提示区分
+		// 获取途径提示使用鲜红色(猩红),与其他金色效果提示区分
 		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid.3",
 				Config.curseOfTimidDropLevel).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xC8102E))));
 	}
