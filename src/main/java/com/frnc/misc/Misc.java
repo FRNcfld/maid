@@ -70,9 +70,6 @@ public class Misc
         // Override the Satiated Shield default config (runs after all mod configs are loaded)
         KaleidoscopeConfigHandler.applyOverrides();
 
-        // Override Create's max chain conveyor length default (32 -> 512)
-        CreateConfigHandler.applyOverrides();
-
         // Create/load the cleanup blacklist/whitelist files in the game directory
         CleanupLists.load();
 
@@ -96,6 +93,10 @@ public class Misc
     {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+
+        // 覆写 Create 锁链传送带最大连接长度 (32 -> 512):
+        // 该值位于 SERVER 配置, 进服时才加载, 故不能在 commonSetup 调用; ServerStarting 晚于配置加载
+        CreateConfigHandler.applyOverrides();
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
