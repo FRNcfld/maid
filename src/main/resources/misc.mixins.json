@@ -10,7 +10,6 @@
     "mixins": [
         "NourishmentEffectMixin",
         "ItemHandlerHelperMixin",
-        "BlazeBurnerBlockEntityMixin",
-        "BlazeBurnerBlockMixin"
+        "BlazeBurnerBlockEntityMixin"
     ]
 }

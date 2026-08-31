@@ -5,6 +5,7 @@ import com.frnc.misc.mechanics.liquidburner.FluidContainer;
 import com.frnc.misc.mechanics.liquidburner.LiquidBurning;
 import com.frnc.misc.mechanics.liquidburner.RecipeRegistry;
 import com.frnc.misc.mechanics.liquidburner.Tags;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -38,10 +39,12 @@ import java.util.Optional;
  *   <li>配方 {@code superheattime > 0} 使燃烧器进入喷火(SPECIAL)状态,持续加热时间由 {@code @ModifyConstant} 接管。</li>
  * </ul>
  *
+ * 作用范围: 仅对"有烈焰人的烈焰人燃烧室"(热度 ≠ NONE, 即 {@code BlazeBurnerBlockEntity} 存在的方块实体)
+ * 生效。Create 的 {@code BlazeBurnerBlock.newBlockEntity} 在热度 NONE 时返回 null, 空的烈焰人燃烧室
+ * 没有方块实体, 因此不会获得储罐、也不接受管道液体 —— 满足"仅修改烈焰人燃烧室, 不改动空燃烧室"的要求。
+ *
  * 持久化注意(Create 6.0.8 特有):
  * <ul>
- *   <li>Create 6.0.8 中 {@code BlazeBurnerBlock.newBlockEntity} 在热度 NONE 时返回 null(方块实体不存在),
- *       熄灭的燃烧器储罐数据会随方块实体丢失 —— 由 {@link BlazeBurnerBlockMixin} 强制始终创建方块实体解决。</li>
  *   <li>恢复储罐 NBT 时 {@code SmartFluidTank} 会触发内容回调,若此时直接消耗会把刚恢复的燃料立刻排空,
  *       故读取期间用 {@code loading} 标志抑制消耗。</li>
  * </ul>
@@ -60,6 +63,11 @@ public abstract class BlazeBurnerBlockEntityMixin extends SmartBlockEntity
 	@Shadow(remap = false)
 	public void updateBlockState()
 	{
+	}
+	@Shadow(remap = false)
+	public BlazeBurnerBlock.HeatLevel getHeatLevelFromBlock()
+	{
+		return null;
 	}
 
 	@Unique
@@ -218,6 +226,24 @@ public abstract class BlazeBurnerBlockEntityMixin extends SmartBlockEntity
 		if (remainingBurnTime <= 0)
 		{
 			tryConsumeLiquid();
+		}
+	}
+
+	/**
+	 * 空燃烧室保持 NONE (旧存档迁移安全网): 此前版本曾强制给 NONE 热度燃烧室创建方块实体, 该方案已移除,
+	 * 新建的燃烧室在 NONE 热度不再有方块实体。但旧存档可能已保存过"热度 NONE + 方块实体"的燃烧室,
+	 * 这些方块实体载入后 tick 会因 Create 的 {@code getHeatLevel()} 在 {@code activeFuel == NONE} 时返回
+	 * SMOULDERING, 把方块热度从 NONE 抬升为 SMOULDERING。这里在 updateBlockState 前跳过:
+	 * 方块热度为 NONE 且无燃料时保持熄灭, 直到灌入液体触发消耗 (consumeLiquid 设置 activeFuel) 才升温。
+	 */
+	@Inject(method = "updateBlockState", at = @At("HEAD"), cancellable = true, remap = false)
+	public void misc$keepEmptyNone(CallbackInfo ci)
+	{
+		if (getHeatLevelFromBlock() == BlazeBurnerBlock.HeatLevel.NONE
+				&& activeFuel == BlazeBurnerBlockEntity.FuelType.NONE
+				&& remainingBurnTime <= 0)
+		{
+			ci.cancel();
 		}
 	}
 
