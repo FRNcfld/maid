@@ -4,7 +4,6 @@ import com.frnc.misc.mechanics.doublejump.JumpHandler;
 import com.frnc.misc.mechanics.doublejump.network.DoubleJumpNetwork;
 import com.frnc.misc.mechanics.CreateModification.CreateConfigHandler;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
-import com.frnc.misc.mechanics.droppeditemcleanup.CleanupLists;
 import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
 import com.frnc.misc.mechanics.liquidburner.RecipeRegistry;
 import com.frnc.misc.mechanics.timid_curse.TimidCurseItems;
@@ -69,9 +68,6 @@ public class Misc
 
         // Override the Satiated Shield default config (runs after all mod configs are loaded)
         KaleidoscopeConfigHandler.applyOverrides();
-
-        // Create/load the cleanup blacklist/whitelist files in the game directory
-        CleanupLists.load();
 
         // Allow L2Hostility to level No-AI mobs (Apotheosis chorus-fruit spawners)
         ApotheoticL2HostilityConfigHandler.applyOverrides();

@@ -1,0 +1,15 @@
+{
+  "rewards": [
+    {
+      "item": "misc:curse_of_timid",
+      "amount": 1,
+      "chance": 0.0001
+    },
+    {
+      "item": "minecraft:enchanted_book",
+      "amount": 1,
+      "chance": 0.00001,
+      "nbt": "{StoredEnchantments:[{id:\"l2complements:eternal\",lvl:1s}]}"
+    }
+  ]
+}

@@ -20,7 +20,7 @@ import java.util.Deque;
  * 掉落物自动清理 (参考 CleanMaid 的 CleanupModule):
  *   - 按配置间隔 (cleanupIntervalSeconds) 定时清理全部已加载维度的掉落物 (ItemEntity)
  *   - 分批处理 (cleanupMaxItemsPerBatch 每 tick), 避免主线程卡顿
- *   - 维度/物品黑白名单 (CleanupLists, misc-blacklist.json / misc-whitelist.json)
+ *   - 维度/物品黑白名单 (CleanupLists, 数据包 data/misc/dropped_item_cleanup/*.json)
  *   - 保护规则: 命名物品 / 新鲜掉落 / 死亡掉落 (DeathDropProtection)
  *   - 清理前 cleanupWarningSeconds 秒广播一次预警 (消息走语言文件 message.misc.cleanup_warning)
  *   - 清理完成广播结果
@@ -82,15 +82,13 @@ public class CleanupHandler
         }
     }
 
-    /** 启动一次清理: 重新加载黑白名单, 收集受维度过滤的掉落物 */
+    /** 启动一次清理: 收集受维度过滤的掉落物 */
     private static void startCleanup(MinecraftServer server)
     {
         cleaning = true;
         totalRemoved = 0;
         cleanupStartTimeMillis = System.currentTimeMillis();
         pendingItems.clear();
-        // 重新加载黑白名单 (编辑文件后下次清理生效)
-        CleanupLists.load();
         for (ServerLevel level : server.getAllLevels())
         {
             if (!shouldCleanDimension(level.dimension().location())) continue;

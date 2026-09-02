@@ -1,6 +1,5 @@
 package com.frnc.misc.mechanics.timid_curse;
 
-import com.frnc.misc.Config;
 import com.google.common.collect.Multimap;
 import dev.xkmc.l2hostility.content.item.curio.core.CurseCurioItem;
 import dev.xkmc.l2hostility.content.logic.DifficultyLevel;
@@ -35,7 +34,8 @@ import java.util.UUID;
  *   <li>hostility 难度等级修正:-50(降低佩戴者难度)。</li>
  *   <li>作为恶意诅咒装备时,额外提供 2 个 {@code hostility_curse} 诅咒槽容量。</li>
  *   <li>死亡时永不掉落(ALWAYS_KEEP)。</li>
- *   <li>获取:玩家首次击杀难度 ≥ 阈值(默认 1000,见配置)的怪物时掉落(见 {@link TimidCurseDrops})。</li>
+ *   <li>获取:击杀 L2Hostility 怪物时按数据包 kill_reward/rewards.json 的概率掉落
+ *       (概率 = 怪物恶意等级 × 配置 chance, 可重复获取)。</li>
  * </ul>
  */
 public class TimidCurseItem extends CurseCurioItem {
@@ -101,8 +101,8 @@ public class TimidCurseItem extends CurseCurioItem {
 		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid").withStyle(ChatFormatting.GOLD));
 		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid.1").withStyle(ChatFormatting.GOLD));
 		// 获取途径提示使用鲜红色(猩红),与其他金色效果提示区分
-		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid.3",
-				Config.curseOfTimidDropLevel).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xC8102E))));
+		tooltip.add(Component.translatable("tooltip.misc.curse_of_timid.3")
+				.withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xC8102E))));
 	}
 
 	/**

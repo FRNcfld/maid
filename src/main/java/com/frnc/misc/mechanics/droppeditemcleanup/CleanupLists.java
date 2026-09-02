@@ -1,64 +1,98 @@
 package com.frnc.misc.mechanics.droppeditemcleanup;
 
+import com.frnc.misc.Misc;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
- * 掉落物清理的维度/物品黑白名单 (参考 CleanMaid 的清单文件):
- *   游戏目录下 misc-blacklist.json / misc-whitelist.json, 格式:
+ * 掉落物清理的维度/物品黑白名单, 由数据包提供:
+ *   data/misc/dropped_item_cleanup/blacklist.json 与 whitelist.json, 格式:
  *     { "items": ["minecraft:diamond"], "dimensions": ["minecraft:overworld"] }
  *   语义: 黑名单 = 必须清理 (命中即清); 白名单 = 受保护 (命中即免清理)。
- *   文件不存在时自动创建为空清单。每次清理开始前会重新加载 (编辑后下次清理生效)。
+ * 数据由 {@link com.frnc.misc.MiscDataPackReloadListener} 在服务端数据包重载时 (含 /reload) 读取,
+ * prepare 阶段读取 (loadFrom), apply 阶段写入内存 (apply)。
  */
 public class CleanupLists
 {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
+    private static final String BLACKLIST_PATH = "dropped_item_cleanup/blacklist.json";
+    private static final String WHITELIST_PATH = "dropped_item_cleanup/whitelist.json";
+
     private static Set<ResourceLocation> itemBlacklist = Set.of();
     private static Set<ResourceLocation> itemWhitelist = Set.of();
     private static Set<ResourceLocation> dimensionBlacklist = Set.of();
     private static Set<ResourceLocation> dimensionWhitelist = Set.of();
 
-    /** 从游戏目录加载黑白名单清单 */
-    public static void load()
+    /** 一次数据包重载读取到的完整黑白名单 (prepare 阶段产物) */
+    public record LoadedLists(
+            Set<ResourceLocation> itemBlacklist,
+            Set<ResourceLocation> itemWhitelist,
+            Set<ResourceLocation> dimensionBlacklist,
+            Set<ResourceLocation> dimensionWhitelist)
     {
-        Path blacklistFile = FMLPaths.GAMEDIR.get().resolve("misc-blacklist.json");
-        Path whitelistFile = FMLPaths.GAMEDIR.get().resolve("misc-whitelist.json");
-        itemBlacklist = loadList(blacklistFile, "items");
-        dimensionBlacklist = loadList(blacklistFile, "dimensions");
-        itemWhitelist = loadList(whitelistFile, "items");
-        dimensionWhitelist = loadList(whitelistFile, "dimensions");
     }
 
-    /** 读取文件中的指定 key 的 ResourceLocation 列表; 文件不存在则创建空清单 */
-    private static Set<ResourceLocation> loadList(Path file, String key)
+    /** 从数据包资源管理器读取黑白名单; 资源缺失时保持空清单 */
+    public static LoadedLists loadFrom(ResourceManager manager)
+    {
+        return new LoadedLists(
+                readList(manager, BLACKLIST_PATH, "items"),
+                readList(manager, WHITELIST_PATH, "items"),
+                readList(manager, BLACKLIST_PATH, "dimensions"),
+                readList(manager, WHITELIST_PATH, "dimensions"));
+    }
+
+    /** 将读取结果写入内存 (apply 阶段, 主线程) */
+    public static void apply(LoadedLists data)
+    {
+        itemBlacklist = data.itemBlacklist();
+        itemWhitelist = data.itemWhitelist();
+        dimensionBlacklist = data.dimensionBlacklist();
+        dimensionWhitelist = data.dimensionWhitelist();
+        LOGGER.info("[misc] 掉落清理黑白名单已加载: 黑名单 {} 物品/{} 维度, 白名单 {} 物品/{} 维度",
+                itemBlacklist.size(), dimensionBlacklist.size(), itemWhitelist.size(), dimensionWhitelist.size());
+    }
+
+    /** 从数据包资源中读取指定 key 的 ResourceLocation 列表 */
+    private static Set<ResourceLocation> readList(ResourceManager manager, String path, String key)
     {
         Set<ResourceLocation> result = new HashSet<>();
         try
         {
-            if (!Files.exists(file))
+            Optional<Resource> resource = manager.getResource(ResourceLocation.fromNamespaceAndPath(Misc.MOD_ID, path));
+            if (resource.isEmpty())
             {
-                Files.writeString(file, "{\n  \"items\": [],\n  \"dimensions\": []\n}");
+                LOGGER.warn("[misc] 数据包资源 {}:{} 不存在, 对应清单为空", Misc.MOD_ID, path);
                 return result;
             }
-            JsonObject root = JsonParser.parseString(Files.readString(file)).getAsJsonObject();
-            JsonElement elem = root.get(key);
-            if (elem != null && elem.isJsonArray())
+            try (var in = resource.get().open())
             {
-                for (JsonElement e : (JsonArray) elem)
+                JsonObject root = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+                JsonElement elem = root.get(key);
+                if (elem != null && elem.isJsonArray())
                 {
-                    ResourceLocation id = ResourceLocation.tryParse(e.getAsString());
-                    if (id != null)
+                    for (JsonElement e : (JsonArray) elem)
                     {
-                        result.add(id);
+                        ResourceLocation id = ResourceLocation.tryParse(e.getAsString());
+                        if (id != null)
+                        {
+                            result.add(id);
+                        }
                     }
                 }
             }
