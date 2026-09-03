@@ -128,6 +128,21 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 
+    // NOTE: exclusiveContent on group "maven.modrinth" is incompatible with fg.deobf("maven.modrinth:...")
+    // — it prevents ForgeGradle's local remap repo from serving the *_mapped_* artifacts, breaking online
+    // resolution. The plain modrinth maven with content{includeGroup} below suffices.
+    // exclusiveContent {
+    //     forRepository {
+    //         maven {
+    //             name = "Modrinth"
+    //             url = "https://api.modrinth.com/maven"
+    //         }
+    //     }
+    //     filter {
+    //         includeGroup "maven.modrinth"
+    //     }
+    // }
+
     mavenCentral()
     // 添加 Modrinth Maven 仓库
     maven {
@@ -164,6 +179,13 @@ repositories {
 }
 
 dependencies {
+
+    implementation fg.deobf("curse.maven:fungal-infection-spore-678295:8342816")
+
+    implementation fg.deobf("maven.modrinth:cPle5Z8G:En1Ihw7Y") // The Endergetic Expansion
+
+    // Endergetic 的必需前置库: blueprint (Team Abnormals, 7.1.4 满足 [7.1.0,) 要求)
+    implementation fg.deobf("maven.modrinth:VsM5EDoI:AiaPEN6q")
 
     // L2Hostility 及其前置 (L2Library 是必需的库模组)
     implementation fg.deobf("curse.maven:l2hostility-909207:7815389")
