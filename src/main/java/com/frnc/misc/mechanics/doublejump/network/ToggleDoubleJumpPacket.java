@@ -29,8 +29,7 @@ public class ToggleDoubleJumpPacket
             ServerPlayer player = ctx.get().getSender();
             if (player == null) return;
 
-            JumpHandler.toggleDoubleJump();
-            boolean newState = JumpHandler.isDoubleJumpEnabled();
+            boolean newState = JumpHandler.toggleDoubleJump(player);
 
             Component message = Component.literal(newState ? "二段跳已开启" : "二段跳已关闭")
                     .withStyle(newState ? ChatFormatting.GREEN : ChatFormatting.RED);

@@ -2,6 +2,7 @@ package com.frnc.misc;
 
 import com.frnc.misc.mechanics.doublejump.JumpHandler;
 import com.frnc.misc.mechanics.doublejump.network.DoubleJumpNetwork;
+import com.frnc.misc.mechanics.elytraflight.network.ElytraFlightNetwork;
 import com.frnc.misc.mechanics.CreateModification.CreateConfigHandler;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
 import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
@@ -56,6 +57,9 @@ public class Misc
 
         // Register the double jump network channel and packets
         DoubleJumpNetwork.register();
+
+        // Register the elytra flight switch network channel and packets
+        ElytraFlightNetwork.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

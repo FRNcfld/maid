@@ -11,7 +11,7 @@ public class Config
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     private static final ForgeConfigSpec.BooleanValue DOUBLE_JUMP_ENABLED = BUILDER
-            .comment("Whether double jump is enabled by default (can be toggled in-game with the J key)")
+            .comment("Default double jump state for each player (each player can toggle their own in-game with the J key)")
             .define("doubleJumpEnabled", true);
 
     private static final ForgeConfigSpec.BooleanValue CLEANUP_ENABLED = BUILDER

@@ -23,7 +23,7 @@ import java.util.UUID;
 /**
  * 二段跳服务端逻辑。
  * 垂直速度在客户端 LocalPlayer 上施加 (玩家移动为客户端权威), 本类负责:
- *   - 开关状态 (配置默认值 + 热键切换, 内存态)
+ *   - 每名玩家的开关状态 (热键切换, 内存态; 未记录的玩家按配置默认值处理)
  *   - 收到 DoubleJumpPacket 时重置服务端摔落距离并记录次数 (保证摔落伤害正确)
  *   - 摔落伤害削减 (LivingFallEvent)
  *   - 玩家登录时把当前开关状态同步给客户端
@@ -33,33 +33,40 @@ public class JumpHandler
 {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    /** 二段跳开关 (内存态, 热键切换不写配置) */
-    private static boolean doubleJumpEnabled = true;
+    /** 服务端权威的每玩家二段跳开关 (内存态, 热键切换不写配置); 未记录的玩家按 defaultEnabled 处理 */
+    private static final Map<UUID, Boolean> enabledByPlayer = new HashMap<>();
+
+    /** 未记录玩家的默认开关, 由配置 doubleJumpEnabled 初始化 */
+    private static boolean defaultEnabled = true;
 
     /** 每个玩家本次腾空已使用的二段跳次数 (>=1 即已用过, 落地重置为 0) */
     private static final Map<UUID, Integer> jumpCounts = new HashMap<>();
 
     public static void initFromConfig()
     {
-        doubleJumpEnabled = Config.doubleJumpEnabled;
-        LOGGER.info("[misc] 二段跳默认状态: {}", doubleJumpEnabled);
+        defaultEnabled = Config.doubleJumpEnabled;
+        LOGGER.info("[misc] 二段跳默认状态: {}", defaultEnabled);
     }
 
-    public static void toggleDoubleJump()
+    /** 服务端: 该玩家的二段跳开关 (未记录的玩家按配置默认值处理) */
+    public static boolean isDoubleJumpEnabled(Player player)
     {
-        doubleJumpEnabled = !doubleJumpEnabled;
-        LOGGER.info("[misc] 二段跳已切换: {}", doubleJumpEnabled);
+        return enabledByPlayer.getOrDefault(player.getUUID(), defaultEnabled);
     }
 
-    public static boolean isDoubleJumpEnabled()
+    /** 服务端: 切换该玩家的二段跳开关, 返回切换后的新状态 */
+    public static boolean toggleDoubleJump(Player player)
     {
-        return doubleJumpEnabled;
+        boolean newState = !isDoubleJumpEnabled(player);
+        enabledByPlayer.put(player.getUUID(), newState);
+        LOGGER.info("[misc] 玩家 {} 的二段跳开关: {}", player.getName().getString(), newState);
+        return newState;
     }
 
     /** 服务端收到二段跳触发包后调用: 重置摔落距离并记录次数 (垂直速度已由客户端施加) */
     public static void handleDoubleJump(ServerPlayer player)
     {
-        if (!doubleJumpEnabled) return;
+        if (!isDoubleJumpEnabled(player)) return;
 
         UUID playerId = player.getUUID();
         int jumpCount = jumpCounts.getOrDefault(playerId, 0);
@@ -78,7 +85,7 @@ public class JumpHandler
         if (event.getEntity() instanceof ServerPlayer serverPlayer)
         {
             DoubleJumpNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer),
-                    new DoubleJumpStatePacket(doubleJumpEnabled));
+                    new DoubleJumpStatePacket(isDoubleJumpEnabled(serverPlayer)));
         }
     }
 
@@ -103,7 +110,7 @@ public class JumpHandler
     {
         if (!(event.getEntity() instanceof Player player)) return;
         if (player.level().isClientSide) return;
-        if (!doubleJumpEnabled) return;
+        if (!isDoubleJumpEnabled(player)) return;
 
         UUID playerId = player.getUUID();
         int jumpCount = jumpCounts.getOrDefault(playerId, 0);
