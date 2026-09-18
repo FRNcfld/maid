@@ -7,6 +7,7 @@ import com.frnc.misc.mechanics.CreateModification.CreateConfigHandler;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
 import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
 import com.frnc.misc.mechanics.liquidburner.RecipeRegistry;
+import com.frnc.misc.mechanics.recall_potion.RecallPotionItems;
 import com.frnc.misc.mechanics.timid_curse.TimidCurseItems;
 import com.mojang.logging.LogUtils;
 import dev.xkmc.l2hostility.init.registrate.LHBlocks;
@@ -49,6 +50,9 @@ public class Misc
         // Register 「怯懦诅咒」(Curse of Timid) Curio 饰品
         TimidCurseItems.ITEMS.register(modEventBus);
 
+        // Register 「回归药水」(Recall Potion) 消耗品
+        RecallPotionItems.ITEMS.register(modEventBus);
+
         // Register liquidburning 配方类型与序列化器 (Create 烈焰人燃烧器液体燃料)
         RecipeRegistry.register(modEventBus);
 
@@ -80,10 +84,11 @@ public class Misc
     // Add the frnc block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-        // 将「怯懦诅咒」挂靠到莱特兰·恶意(L2 Hostility)的创造标签页
+        // 将「怯懦诅咒」与「回归药水」挂靠到莱特兰·恶意(L2 Hostility)的创造标签页
         if (event.getTab() == LHBlocks.TAB.get())
         {
             event.accept(TimidCurseItems.CURSE_OF_TIMID.get());
+            event.accept(RecallPotionItems.RECALL_POTION.get());
         }
     }
 

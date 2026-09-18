@@ -6,5 +6,8 @@
     "item.misc.curse_of_timid": "Curse of Timid",
     "tooltip.misc.curse_of_timid": "-10% Incoming Damage; +1% reduction per 10 Difficulty Levels (Max 80%).",
     "tooltip.misc.curse_of_timid.1": "-0.1 Base Melee Attack per 10 Difficulty Levels (Max -10).",
-    "tooltip.misc.curse_of_timid.3": "Drops from L2Hostility monsters with a chance that scales with their Difficulty Level."
+    "tooltip.misc.curse_of_timid.3": "Drops from L2Hostility monsters with a chance that scales with their Difficulty Level.",
+    "item.misc.recall_potion": "Recall Potion",
+    "tooltip.misc.recall_potion": "Hold to drink, teleporting you back to your personal respawn point.",
+    "tooltip.misc.recall_potion.1": "Tip: works across dimensions."
 }
