@@ -9,5 +9,9 @@
     "tooltip.misc.curse_of_timid.3": "Drops from L2Hostility monsters with a chance that scales with their Difficulty Level.",
     "item.misc.recall_potion": "Recall Potion",
     "tooltip.misc.recall_potion": "Hold to drink, teleporting you back to your personal respawn point.",
-    "tooltip.misc.recall_potion.1": "Tip: works across dimensions."
+    "tooltip.misc.recall_potion.1": "Tip: works across dimensions.",
+    "advancements.misc.getega.title": "Notch Apple",
+    "advancements.misc.getega.description": "Obtain an Enchanted Golden Apple",
+    "advancements.misc.use_ega.title": "Reign Supreme in the World",
+    "advancements.misc.use_ega.description": "Eat an Enchanted Golden Apple"
 }

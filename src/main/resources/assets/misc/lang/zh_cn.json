@@ -9,5 +9,9 @@
     "tooltip.misc.curse_of_timid.3": "击杀敌对生物时有概率掉落，等级越高概率越大。",
     "item.misc.recall_potion": "回归药水",
     "tooltip.misc.recall_potion": "长按饮用，传送回你的个人复活点。",
-    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。"
+    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。",
+    "advancements.misc.getega.title": "Notch苹果",
+    "advancements.misc.getega.description": "获取一个附魔金苹果",
+    "advancements.misc.use_ega.title": "君临天下",
+    "advancements.misc.use_ega.description": "吃下一个附魔金苹果"
 }

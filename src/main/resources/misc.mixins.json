@@ -12,6 +12,8 @@
         "ItemHandlerHelperMixin",
         "BlazeBurnerBlockEntityMixin",
         "MobTraitCapMixin",
-        "PlayerElytraFlightMixin"
+        "PlayerElytraFlightMixin",
+        "FoodsMixin",
+        "ItemMixin"
     ]
 }

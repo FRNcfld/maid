@@ -1,0 +1,32 @@
+{
+  "parent": "misc:adventure/getega",
+  "criteria": {
+    "use": {
+      "conditions": {
+        "item": {
+          "items": ["minecraft:enchanted_golden_apple"]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.misc.use_ega.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "title": {
+      "translate": "advancements.misc.use_ega.title"
+    }
+  },
+  "requirements": [
+    [
+      "use"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
