@@ -15,5 +15,10 @@
         "PlayerElytraFlightMixin",
         "FoodsMixin",
         "ItemMixin"
+    ],
+    "client": [
+        "client.BrandingControlMixin",
+        "client.OpenCreateMenuButtonHandlerMixin",
+        "client.SplashManagerMixin"
     ]
 }
