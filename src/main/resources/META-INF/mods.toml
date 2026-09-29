@@ -8,7 +8,7 @@ logoFile = "assets/misc/Logo.png"
 
 modId="misc"
 
-version="1.20.1-1.0.0"
+version="${mod_version}"
 
 displayName="杂项修改"
 
@@ -25,30 +25,6 @@ side="BOTH"
 modId="minecraft"
 mandatory=true
 versionRange="1.20.1"
-ordering="NONE"
-side="BOTH"
-
-[[dependencies.misc]]
-modId = "touhou_little_maid"
-# mandatory 为 false 表示该依赖为可选，仅在安装了女仆模组时才检查版本
-mandatory = true
-# 限制女仆模组最低版本为 1.3.0
-versionRange = "[1.3.0,)"
-# 确保在女仆模组之后加载
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.misc]]
-modId="farmersdelight"
-mandatory=true
-versionRange="[1.3,)"
-ordering="NONE"
-side="BOTH"
-
-[[dependencies.misc]]
-modId="kaleidoscope_cookery"
-mandatory=true
-versionRange="[1.4.0,)"
 ordering="NONE"
 side="BOTH"
 
@@ -85,6 +61,15 @@ modId="l2hostility"
 mandatory=true
 versionRange="[2.5.19,)"
 ordering="NONE"
+side="BOTH"
+
+# 直接依赖: TimidCurseItem 实现了 Curios 的 ICurio / 使用 CuriosApi 与 SlotContext。
+# 版本下限与 l2hostility 的要求 ([5.3.4,) ) 保持一致, 因此满足 L2Hostility 的环境必然满足本模组。
+[[dependencies.misc]]
+modId="curios"
+mandatory=true
+versionRange="[5.3.4,)"
+ordering="AFTER"
 side="BOTH"
 
 [[dependencies.misc]]

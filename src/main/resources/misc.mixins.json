@@ -8,13 +8,8 @@
         "defaultRequire": 1
     },
     "mixins": [
-        "NourishmentEffectMixin",
         "ItemHandlerHelperMixin",
-        "BlazeBurnerBlockEntityMixin",
-        "MobTraitCapMixin",
-        "PlayerElytraFlightMixin",
-        "FoodsMixin",
-        "ItemMixin"
+        "MobTraitCapMixin"
     ],
     "client": [
         "client.BrandingControlMixin",

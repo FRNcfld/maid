@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,16 +44,6 @@ public class ApotheosisItemMatcher
         Set<String> idsA = affixIds(a);
         Set<String> idsB = affixIds(b);
         return idsA.equals(idsB);
-    }
-
-    /** 基于词缀身份的一致 hashCode (保证 equals 一致性) */
-    public static int affixIdentityHash(ItemStack stack)
-    {
-        int h = stack.getItem().hashCode();
-        DynamicHolder<LootRarity> rarity = AffixHelper.getRarity(stack);
-        h = h * 31 + Objects.hashCode(rarity.isBound() ? rarity.get() : null);
-        h = h * 31 + affixIds(stack).hashCode();
-        return h;
     }
 
     /** 词缀 ID 集合 (已排序, 保证顺序无关) */

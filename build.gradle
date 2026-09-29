@@ -76,9 +76,9 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
-            // Remap mixin refmaps of deobf'd dependencies (e.g. touhou_little_maid) at runtime.
-            // Without this, SRG names in dependency refmaps fail to resolve against the
-            // named (MCP) classes in a dev environment -> "could not find any targets".
+            // Remap SRG names inside mixin refmaps to the named (MCP) mappings of the dev
+            // workspace. Without this, refmap entries fail to resolve against the named
+            // classes in a dev environment -> "could not find any targets".
             // See https://github.com/SpongePowered/Mixin/issues/462
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -196,7 +196,10 @@ dependencies {
 
     implementation fg.deobf("curse.maven:curios-309927:6418456")
 
-    implementation fg.deobf("curse.maven:patchouli-306770:7731017")
+    // Patchouli 不被本模组代码引用（src 内零引用），但 L2Hostility 把它声明为 mandatory 依赖
+    // (mods.toml: versionRange "[1.20.1-81-FORGE,)")，缺失会导致 l2hostility 拒绝加载。
+    // 因此它必须在 runtime 类路径上，但编译期并不需要，故用 runtimeOnly。
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:7731017")
 
     implementation fg.deobf("curse.maven:placebo-283644:5414631")
 
@@ -204,12 +207,6 @@ dependencies {
 
     // Apotheosis 的前置: AttributesLib (modId: attributeslib)
     implementation fg.deobf("curse.maven:apothic-attributes-898963:5340012")
-
-    implementation fg.deobf("maven.modrinth:kaleidoscope-cookery:1.4.1-forge+mc1.20.1")
-
-    implementation fg.deobf("maven.modrinth:touhou-little-maid:1.5.2-forge+mc1.20.1")
-
-    implementation fg.deobf("curse.maven:farmers-delight-398521:8083474")
 
     // Create (机械动力) 及其附属库, 用于物品过滤器识别神化装备属性
     implementation(fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false })

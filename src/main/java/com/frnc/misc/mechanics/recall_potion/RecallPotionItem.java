@@ -26,7 +26,7 @@ import java.util.Optional;
 /**
  * 「回归药水」(Recall Potion) — 长按饮用后传送回个人复活点的消耗品。
  *
- * <p>移植自 NeoForge 1.21.1 模组 c6c 的同名物品(见 {@code src/main/recall_potion.md}),
+ * <p>移植自 NeoForge 1.21.1 模组 c6c 的同名物品,
  * 行为等价,但底层 API 换成了 1.20.1 的对应实现。
  *
  * <ul>

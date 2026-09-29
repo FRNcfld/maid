@@ -1,17 +1,9 @@
 {
-    "key.categories.misc": "杂项",
-    "key.misc.double_jump_toggle": "二段跳开关",
-    "key.misc.elytra_flight_toggle": "鞘翅飞行开关",
-    "message.misc.cleanup_warning": "将在 %s 秒后清理掉落物",
     "item.misc.curse_of_timid": "怯懦诅咒",
     "tooltip.misc.curse_of_timid": "减少 10% 所受伤害，且难度等级每提升 10 级额外减少 1%（最高 80%）。",
     "tooltip.misc.curse_of_timid.1": "每 10 级难度等级减少 0.1 点基础近战攻击力，最多减少 10 点。",
     "tooltip.misc.curse_of_timid.3": "击杀敌对生物时有概率掉落，等级越高概率越大。",
     "item.misc.recall_potion": "回归药水",
     "tooltip.misc.recall_potion": "长按饮用，传送回你的个人复活点。",
-    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。",
-    "advancements.misc.getega.title": "Notch苹果",
-    "advancements.misc.getega.description": "获取一个附魔金苹果",
-    "advancements.misc.use_ega.title": "君临天下",
-    "advancements.misc.use_ega.description": "吃下一个附魔金苹果"
+    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。"
 }

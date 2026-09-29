@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
  * 向 CreateBuiltInRegistries.ITEM_ATTRIBUTE_TYPE 注册两个新属性类型:
  *   - {modid}:rarity  识别装备的 Apotheosis 稀有度 (LootRarity)
  *   - {modid}:affix   识别装备是否带有某个 Apotheosis 词缀 (Affix)
- *
- * 参考 TECHNICAL_SPEC.md (Apotheotic Creation)。
  */
 @Mod.EventBusSubscriber(modid = Misc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ApotheoticCreationHandler

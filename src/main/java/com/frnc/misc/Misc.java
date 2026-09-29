@@ -1,12 +1,7 @@
 package com.frnc.misc;
 
-import com.frnc.misc.mechanics.doublejump.JumpHandler;
-import com.frnc.misc.mechanics.doublejump.network.DoubleJumpNetwork;
-import com.frnc.misc.mechanics.elytraflight.network.ElytraFlightNetwork;
 import com.frnc.misc.mechanics.CreateModification.CreateConfigHandler;
 import com.frnc.misc.mechanics.apotheotic_l2hostility.ApotheoticL2HostilityConfigHandler;
-import com.frnc.misc.mechanics.kaleidoscope_cookery.KaleidoscopeConfigHandler;
-import com.frnc.misc.mechanics.liquidburner.RecipeRegistry;
 import com.frnc.misc.mechanics.recall_potion.RecallPotionItems;
 import com.frnc.misc.mechanics.timid_curse.TimidCurseItems;
 import com.mojang.logging.LogUtils;
@@ -25,7 +20,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
+/**
+ * 杂项修改（misc）主入口。
+ *
+ * <p>当前内容：Create 过滤器识别神化属性、神化刷怪笼 × L2Hostility 联动、Create 锁链传动带
+ * 长度、主菜单精简、怯懦诅咒、回归药水、击杀掉落。
+ *
+ * <p>二段跳 / 鞘翅飞行开关 / 掉落物清理 / 附魔金苹果强化（含对应 mixin 与数据包）
+ * 已拆分到独立模组 {@code better_experience}，液体燃料已拆分到 {@code create_better_liquid_fuel}。
+ */
 @Mod(Misc.MOD_ID)
 public class Misc
 {
@@ -53,29 +56,14 @@ public class Misc
         // Register 「回归药水」(Recall Potion) 消耗品
         RecallPotionItems.ITEMS.register(modEventBus);
 
-        // Register liquidburning 配方类型与序列化器 (Create 烈焰人燃烧器液体燃料)
-        RecipeRegistry.register(modEventBus);
-
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-
-        // Register the double jump network channel and packets
-        DoubleJumpNetwork.register();
-
-        // Register the elytra flight switch network channel and packets
-        ElytraFlightNetwork.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
-
-        // Initialize the double jump default state from config
-        JumpHandler.initFromConfig();
-
-        // Override the Satiated Shield default config (runs after all mod configs are loaded)
-        KaleidoscopeConfigHandler.applyOverrides();
 
         // Allow L2Hostility to level No-AI mobs (Apotheosis chorus-fruit spawners)
         ApotheoticL2HostilityConfigHandler.applyOverrides();
