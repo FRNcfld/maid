@@ -5,5 +5,7 @@
     "tooltip.misc.curse_of_timid.3": "击杀敌对生物时有概率掉落，等级越高概率越大。",
     "item.misc.recall_potion": "回归药水",
     "tooltip.misc.recall_potion": "长按饮用，传送回你的个人复活点。",
-    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。"
+    "tooltip.misc.recall_potion.1": "温馨提示：跨维度有效。",
+    "message.misc.no_hostility_spawner.on": "该刷怪笼已被净化：之后生成的生物不会获得恶意等级与词条。",
+    "message.misc.no_hostility_spawner.off": "该刷怪笼已恢复正常：之后生成的生物会重新获得恶意等级与词条。"
 }
