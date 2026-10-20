@@ -9,7 +9,17 @@
     },
     "mixins": [
         "ItemHandlerHelperMixin",
-        "MobTraitCapMixin"
+        "MobTraitCapMixin",
+        "TripleStripCapeMixin",
+        "spore.BloaterMixin",
+        "spore.BraionmilMixin",
+        "spore.BrauereiMixin",
+        "spore.BrotMixin",
+        "spore.ChemistMixin",
+        "spore.GastGeberMixin",
+        "spore.HandlerEventsMixin",
+        "spore.OrganiteBlockMixin",
+        "spore.SporeBurstSupportMixin"
     ],
     "client": [
         "client.BrandingControlMixin",

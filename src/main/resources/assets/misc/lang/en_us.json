@@ -7,5 +7,6 @@
     "tooltip.misc.recall_potion": "Hold to drink, teleporting you back to your personal respawn point.",
     "tooltip.misc.recall_potion.1": "Tip: works across dimensions.",
     "message.misc.no_hostility_spawner.on": "Spawner purified: future spawns will have no malice level or traits.",
-    "message.misc.no_hostility_spawner.off": "Spawner restored: future spawns will gain malice levels and traits again."
+    "message.misc.no_hostility_spawner.off": "Spawner restored: future spawns will gain malice levels and traits again.",
+    "tooltip.misc.gas_mask_curio": "Immune to fungal infection and spore gas (grants no armor)."
 }
